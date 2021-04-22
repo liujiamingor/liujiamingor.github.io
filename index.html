@@ -46,7 +46,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="" class="js-avatar">
+			<img src="https://avatars.githubusercontent.com/u/3347991?v=4" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/"></a></h1>
@@ -104,7 +104,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="" class="js-avatar">
+				<img src="https://avatars.githubusercontent.com/u/3347991?v=4" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author"></h1>
@@ -154,6 +154,712 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-hello-redis" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/22/hello-redis/">redis</a>
+    </h1>
+  
+
+        
+        <a href="/2021/04/22/hello-redis/" class="archive-article-date">
+  	<time datetime="2021-04-22T01:57:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="记录Redis-（es）"><a href="#记录Redis-（es）" class="headerlink" title="记录Redis （es）"></a>记录Redis （es）</h2><p>Redis<br>Nosql<br>1、Nosql概述<br>为什么要用Nosql</p>
+<p>1<br>1、单击MySQL的年代<br><img src="Redis.assets/image-20200903170110723.png" alt="image-20200903170110723"></p>
+<p>在90年代，一个基本的网站访问量不会太大，单个数据库完全足够</p>
+<p>单机MySQL的弊端</p>
+<p>数据量如果太大，一个机器会放不下</p>
+<p>数据的索引（超过300万条–B+Tree）,一个机器的内存也会放不下</p>
+<p>访问量（读写混合），一个服务器承受不了</p>
+<p>只要出现了以上的一种情况，那么就必须升级数据库—于是缓存开始起作用了</p>
+<p>1<br>2、Memcached（缓存）+ MySQL + 垂直拆分（读写分离）<br>如果有相同的数据被查询后，添加进入缓存，在查询的时候直接走缓存，这样可以有效的提升性能，可以少操作数据库，减轻数据库的压力</p>
+<p>发展过程：优化数据结构和索引—&gt;文件缓存（IO）—&gt;Memcached（当时最热门的技术）</p>
+<p>1<br>3、分库分表 + 水平拆分 + MySQL集群<br>技术和业务在发展的同时，对人的要求也越来越高了，数据库的本质就是（读，写）</p>
+<p>早些年的数据引擎：MyISAM：查询的时候会进行表锁，十分的 影响效率，高并发下会出现严重的锁问题</p>
+<p>转战Innodb：行锁</p>
+<p>慢慢的就开始使用分库分表来解决写的压力</p>
+<p>1<br>4、为什么要用NoSQL<br>用户的个人信息，社交网络，地理位置。用户自己产生的数据，用户日志等等的爆发式增长</p>
+<p>这个时候我们就需要使用NoSQL数据库，NoSQL可以很好的处理以上的情况                                </p>
+<p>2、什么是NoSQL<br>1<br>NoSQL<br>NoSQL = Not Only SQL（不仅仅是SQL）</p>
+<p>泛指非关系型数据库，随着web2.0互联网的诞生，传统的关系型数据库很难对付web2.0时代，尤其是超大规模的高并发的社区！暴露出来很多难以克服的问题，NoSQL在当今大数据环境下发展的十分迅速，Redis是发展最快的</p>
+<p>1<br>NoSQL特点<br>方便扩展（数据之间没有关系，很好扩展）</p>
+<p>大数据量高性能（Redis一秒写8万次，读取11万次，NoSQL的缓存是记录级的，是一种细粒级的缓存，性能会比较高）</p>
+<p>数据类型是多样性的（不需要事先设计数据库）</p>
+<p>传统BDBMS和NoSQL</p>
+<p>1<br>传统的RDBMS<br>2</p>
+<ul>
+<li>结构化组织<br>3</li>
+<li>SQL<br>4</li>
+<li>数据和关系都存在单独的表中<br>5</li>
+<li>操作，数据定义语言<br>6</li>
+<li>严格的一致性<br>7</li>
+<li>基础的事务<br>8</li>
+<li>….<br>1<br>NoSQL<br>2</li>
+<li>不仅仅是数据<br>3</li>
+<li>没有固定的查询语句<br>4</li>
+<li>键值对存储，列存储，文档存储，图形存储<br>5</li>
+<li>最终一致性<br>6</li>
+<li>CAP定理和BASE （异地多活）<br>7</li>
+<li>高性能 ，高可用 ， 高可扩<br>8</li>
+<li>….<br>3、Nosql的四大分类<br>KV键值对：</li>
+</ul>
+<p>文档型数据库（bson格式和json一样）</p>
+<p>MongoDB（一般必须要掌握）</p>
+<p>MongoDB是一个基于分布式文件存储的数据库，C++编写的，主要用来处理大量的文档</p>
+<p>MongoDB是一个介于关系型数据库和非关系型数据库中间的产品！MongoDB是非关系型数据库中功能最丰富，最像关系型数据库的</p>
+<p>ConthDB</p>
+<p>列存储数据库</p>
+<p>HBase</p>
+<p>分布式文件系统</p>
+<p>图形关系数据库</p>
+<p>不是用来存图形的，放的是一些关系，比如：朋友圈社交网络，广告推荐</p>
+<p>Neo4j，InfoGrid</p>
+<p><img src="Redis.assets/image-20200904094538273.png" alt="image-20200904094538273"></p>
+<p><img src="Redis.assets/image-20200904094559135.png" alt="image-20200904094559135"></p>
+<p>Redis入门<br>1、概述<br>1<br>Redis是什么<br>Redis（Remote  Dictionary Server）,即远程字典服务</p>
+<p>是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API，是当下最热门的NoSQL技术之一，也被人们称为结构化数据库</p>
+<p>redis会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了master-slave(主从)同步。</p>
+<p><img src="Redis.assets/image-20200904162424009.png" alt="image-20200904162424009"></p>
+<p>1<br>Redis能干嘛<br>内存存储、持久化，内存中是断电即失，所以所持久化很重要（rdb、aof）</p>
+<p>效率高，可以用于高速缓存</p>
+<p>发布订阅系统</p>
+<p>地图信息分析</p>
+<p>计数器（浏览量）、计时器</p>
+<p>……</p>
+<p>1<br>Redis特性<br>多样的数据类型</p>
+<p>持久化</p>
+<p>集群</p>
+<p>事务</p>
+<p>……</p>
+<p>1<br>学习中需要用到的东西<br>官网：<a target="_blank" rel="noopener" href="https://redis.io/">https://redis.io/</a></p>
+<p>中文网：<a target="_blank" rel="noopener" href="http://www.redis.cn/">http://www.redis.cn/</a></p>
+<p>下载：官网下载，注意window在GitHub上面下载（停更了很久），推荐在linux中使用</p>
+<p>2、Linux安装<br>下载安装包<a target="_blank" rel="noopener" href="http://download.redis.io/releases/redis-5.0.8.tar.gz">http://download.redis.io/releases/redis-5.0.8.tar.gz</a></p>
+<p>3、测试性能<br><img src="Redis.assets/image-20200904200152188.png" alt="image-20200904200152188"></p>
+<p>4、redis的基础知识<br>redis默认有16个数据库 </p>
+<p><img src="Redis.assets/image-20200904201904519.png" alt="image-20200904201904519"></p>
+<p>默认使用的是第0个</p>
+<p>可以使用select进行切换数据库</p>
+<p>1<br>127.0.0.1:6379&gt; select 3   切换数据库<br>2<br>OK<br>3<br>127.0.0.1:6379[3]&gt; dbsize  查看DB大小<br>4<br>(integer) 0<br>5<br>127.0.0.1:6379[3]&gt;<br>6<br>​<br>7<br>增加了一个值后<br>8<br>127.0.0.1:6379[3]&gt; set pcy pcy<br>9<br>OK<br>10<br>127.0.0.1:6379[3]&gt; dbsize<br>11<br>(integer) 1<br>12<br>​<br>13<br>127.0.0.1:6379[3]&gt; keys *  查看当前数据库所有的key<br>14</p>
+<ol>
+<li>“pcy”<br>15</li>
+</ol>
+<p>127.0.0.1:6379[3]&gt;<br>16<br>​<br>17<br>127.0.0.1:6379[3]&gt; flushdb  清空当前数据库 清空所有数据库（flushall）<br>18<br>OK<br>19<br>127.0.0.1:6379[3]&gt; keys *<br>20<br>(empty list or set)<br>21<br>127.0.0.1:6379[3]&gt;<br>22<br>​<br>为什么redis的端口号为6379（了解一下即可）</p>
+<p>1<br>redis是单线程的<br>明白redis是很快的，官方表示redis是基于内存操作的，CPU不是redis的性能瓶颈，redis的瓶颈是根据机器的内存和网络带宽，既然能使用单线程来实现，就使用单线程了</p>
+<p>redis为什么单线程还这么快</p>
+<p>redis是c语言写的，官方提供的数据为100000+的QPS，完全不比同样是使用key-value的Memecache差</p>
+<p>误区1：高性能的服务器一定是多线程的？</p>
+<p>误区2：多线程一定比单线程高？</p>
+<p>核心：redis是将所有的数据全部放在内存中的，所以说使用单线程去操作效率就是最高的，多线程CPU会上下文会切换，这是一个耗时的操作，对于内存系统来说如果没有上下文切换效率就是最高的。多次读写都是在一个cpu上的，在内存情况下，这个就是最佳方案</p>
+<p>五大数据类型<br>1<br>官网文档<br>2<br>Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 它支持多种类型的数据结构，如 字符串（strings）， 散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） 与范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询。 Redis 内置了 复制（replication），LUA脚本（Lua scripting）， LRU驱动事件（LRU eviction），事务（transactions） 和不同级别的 磁盘持久化（persistence）， 并通过 Redis哨兵（Sentinel）和自动 分区（Cluster）提供高可用性（high availability）。<br>1、Redis-Key<br>1<br>127.0.0.1:6379&gt; set name lym<br>2<br>OK<br>3<br>127.0.0.1:6379&gt; set age 1<br>4<br>OK<br>5<br>127.0.0.1:6379&gt; keys *<br>6</p>
+<ol>
+<li>“age”<br>7</li>
+<li>“name”<br>8</li>
+</ol>
+<p>127.0.0.1:6379&gt; exists name  查看是否存在这个key<br>9<br>(integer) 1<br>10<br>127.0.0.1:6379&gt; exists lym<br>11<br>(integer) 0<br>12<br>127.0.0.1:6379&gt; move name  移除key<br>13<br>(integer) 1<br>14<br>127.0.0.1:6379&gt;<br>15<br>​<br>16<br>​<br>17<br>127.0.0.1:6379&gt; keys *<br>18</p>
+<ol>
+<li>“age”<br>19</li>
+<li>“name”<br>20</li>
+</ol>
+<p>127.0.0.1:6379&gt; get name<br>21<br>“lym”<br>22<br>127.0.0.1:6379&gt;  expire name 10   设置过期时间 10秒<br>23<br>(integer) 1<br>24<br>127.0.0.1:6379&gt; ttl name 查看过期倒计时<br>25<br>(integer) 1<br>26<br>127.0.0.1:6379&gt; ttl name 返回-2为已过期<br>27<br>(integer) -2<br>28<br>127.0.0.1:6379&gt; get name<br>29<br>(nil)<br>30<br>127.0.0.1:6379&gt; type age  查看key的类型<br>31<br>string<br>32<br>127.0.0.1:6379&gt;<br>2、String（字符串）<br>1<br>============================================================================<br>2<br>127.0.0.1:6379&gt; get key1   通过key值获取value<br>3<br>“v1”<br>4<br>127.0.0.1:6379&gt; append key1 hello  通过append（条件为key）拼接字符串  返回的是字符串的长度 如果当前key不存在则set这个                                   key它的value为追加的值<br>5<br>(integer) 7<br>6<br>127.0.0.1:6379&gt; get key1<br>7<br>“v1hello”<br>8<br>127.0.0.1:6379&gt;<br>9<br>​<br>10<br>============================================================================<br>11<br>127.0.0.1:6379&gt; strlen key1  获取字符串的长度<br>12<br>(integer) 7<br>13<br>127.0.0.1:6379&gt; append key1 lym<br>14<br>(integer) 10<br>15<br>127.0.0.1:6379&gt; strlen key1<br>16<br>(integer) 10<br>17<br>127.0.0.1:6379&gt;<br>18<br>​<br>19<br>============================================================================<br>20<br>127.0.0.1:6379&gt; flushall  清除所有数据库的数据<br>21<br>OK<br>22<br>127.0.0.1:6379&gt; set views 0<br>23<br>OK<br>24<br>127.0.0.1:6379&gt; incr views  自增1<br>25<br>(integer) 1<br>26<br>127.0.0.1:6379&gt; incr views<br>27<br>(integer) 2<br>28<br>127.0.0.1:6379&gt; get views<br>29<br>“2”<br>30<br>127.0.0.1:6379&gt; decr views  自减1<br>31<br>(integer) 1<br>32<br>127.0.0.1:6379&gt; get views<br>33<br>“1”<br>34<br>127.0.0.1:6379&gt; incrby views 10  自增多  当incrby的key不存在则会set一个key它的值为你要自增的数<br>35<br>(integer) 10<br>36<br>127.0.0.1:6379&gt; get views<br>37<br>“10”<br>38<br>127.0.0.1:6379&gt; decrby views 10  自减多  当decrby的key不存在则会set一个key它的值为你要自增的数<br>39<br>(integer) 10<br>40<br>127.0.0.1:6379&gt; get views<br>41<br>“-10”<br>42<br>​<br>43<br>============================================================================<br>44<br>127.0.0.1:6379&gt; set lym hello<br>45<br>OK<br>46<br>127.0.0.1:6379&gt; get lym<br>47<br>“hello”<br>48<br>127.0.0.1:6379&gt; getrange lym 2 4  获取取这个key值的第二个索引到第四个索引的闭合区间（0 -1表示全部获取）类似于截取字符串<br>49<br>“llo”<br>50<br>127.0.0.1:6379&gt;<br>51<br>​<br>52<br>============================================================================<br>53<br>127.0.0.1:6379&gt; set lym hello<br>54<br>OK<br>55<br>127.0.0.1:6379&gt; get lym<br>56<br>“hello”<br>57<br>127.0.0.1:6379&gt; setrange lym 1 xx  替换掉key值的数据，从第一个索引开始替换掉2个字符<br>58<br>(integer) 5<br>59<br>127.0.0.1:6379&gt; get lym<br>60<br>“hxxlo”<br>61<br>127.0.0.1:6379&gt;<br>62<br>​<br>63<br>============================================================================<br>64<br>127.0.0.1:6379&gt; setex lym 30 hello  设置一个key值并且设置过期时间<br>65<br>OK<br>66<br>127.0.0.1:6379&gt; get lym<br>67<br>“hello”<br>68<br>127.0.0.1:6379&gt; ttl lym  查看过期时间<br>69<br>(integer) 15<br>70<br>127.0.0.1:6379&gt; setnx pcy hello  当这个key值不存在就set<br>71<br>(integer) 1<br>72<br>127.0.0.1:6379&gt; keys *<br>73</p>
+<ol>
+<li>“pcy”<br>74</li>
+</ol>
+<p>127.0.0.1:6379&gt; setnx pcy pcy  这里已经存在pcy这个key值所以这个设置不生效<br>75<br>(integer) 0<br>76<br>127.0.0.1:6379&gt; get pcy<br>77<br>“hello”<br>78<br>127.0.0.1:6379&gt;<br>79<br>​<br>80<br>============================================================================<br>81<br>127.0.0.1:6379&gt; mset k1 v1 k2 v2 k3 v3  一次set多个值<br>82<br>OK<br>83<br>127.0.0.1:6379&gt; keys *<br>84</p>
+<ol>
+<li>“k3”<br>85</li>
+<li>“k2”<br>86</li>
+<li>“k1”<br>87</li>
+</ol>
+<p>127.0.0.1:6379&gt; mget k1 k2 k3 一次查询多个key值<br>88</p>
+<ol>
+<li>“v1”<br>89</li>
+<li>“v2”<br>90</li>
+<li>“v3”<br>91</li>
+</ol>
+<p>127.0.0.1:6379&gt; msetnx k1 v1 k4 v4  如果不存在就set  msetnx是一个原子性的操作要么一起成功要么一起失败<br>92<br>(integer) 0<br>93<br>127.0.0.1:6379&gt; get k4<br>94<br>(nil)<br>95<br>127.0.0.1:6379&gt;<br>96<br>​<br>97<br>============================================================================<br>98<br>#对象设置<br>99<br>#这里的key是一个巧妙的设计：user:{id}:{filed}<br>100<br>127.0.0.1:6379&gt; mset user:1:name lym user:1:age 20<br>101<br>OK<br>102<br>127.0.0.1:6379&gt; mget user:1:name user:1:age<br>103</p>
+<ol>
+<li>“lym”<br>104</li>
+<li>“20”<br>105</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>106<br>​<br>107<br>============================================================================<br>108<br>#getset先get在set<br>109<br>127.0.0.1:6379&gt; getset db redis   如果不存在值则返回nil<br>110<br>(nil)<br>111<br>127.0.0.1:6379&gt; get db<br>112<br>“redis”<br>113<br>127.0.0.1:6379&gt; getset db mongodb  如果存在值，获取原来的值，并设置新的值<br>114<br>“redis”<br>115<br>127.0.0.1:6379&gt; get db<br>116<br>“mongodb”<br>117<br>127.0.0.1:6379&gt;<br>118<br>​<br>3、List（列表）<br>基本的数据类型，列表</p>
+<p>所有的list命令都是以l开头的</p>
+<h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>2<br>127.0.0.1:6379&gt; lpush list one  设置一个list并把one插入进去，从列表头部（左）rpush（又变插入）<br>3<br>(integer) 1<br>4<br>127.0.0.1:6379&gt; lpush list one two<br>5<br>(integer) 3<br>6<br>127.0.0.1:6379&gt; lrange list 0 -1 通过索引查看list的值<br>7</p>
+<ol>
+<li>“two”<br>8</li>
+<li>“one”<br>9</li>
+<li>“one”<br>10</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>11<br>​<br>12<br>============================================================================<br>13<br>127.0.0.1:6379&gt; lpush list one two three<br>14<br>(integer) 3<br>15<br>127.0.0.1:6379&gt; lrange list 0 -1<br>16</p>
+<ol>
+<li>“three”<br>17</li>
+<li>“two”<br>18</li>
+<li>“one”<br>19</li>
+</ol>
+<p>127.0.0.1:6379&gt; lpop list  (lpop)从左边移除一个值<br>20<br>“three”<br>21<br>127.0.0.1:6379&gt; rpop list   (rpop)从右边移除一个值<br>22<br>“one”<br>23<br>127.0.0.1:6379&gt; lrange list 0 -1<br>24</p>
+<ol>
+<li>“two”<br>25</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>26<br>​<br>27<br>============================================================================<br>28<br>127.0.0.1:6379&gt; lpush list one two three<br>29<br>(integer) 3<br>30<br>127.0.0.1:6379&gt; lrange list 0 -1<br>31</p>
+<ol>
+<li>“three”<br>32</li>
+<li>“two”<br>33</li>
+<li>“one”<br>34</li>
+</ol>
+<p>127.0.0.1:6379&gt; lindex list 1  (lindex)通过下标获取值<br>35<br>“two”<br>36<br>127.0.0.1:6379&gt; lindex list 0<br>37<br>“three”<br>38<br>127.0.0.1:6379&gt; llen list  （llen）返回列表的长度<br>39<br>(integer) 3<br>40<br>127.0.0.1:6379&gt;<br>41<br>​<br>42<br>============================================================================<br>43<br>127.0.0.1:6379&gt; lpush list one one two two three three<br>44<br>(integer) 6<br>45<br>127.0.0.1:6379&gt; lrange list 0 -1<br>46</p>
+<ol>
+<li>“three”<br>47</li>
+<li>“three”<br>48</li>
+<li>“two”<br>49</li>
+<li>“two”<br>50</li>
+<li>“one”<br>51</li>
+<li>“one”<br>52</li>
+</ol>
+<p>127.0.0.1:6379&gt; lrem list 1 one  （lrem）移除指定个数的value，精确匹配<br>53<br>(integer) 1<br>54<br>127.0.0.1:6379&gt; lrem list 2 two<br>55<br>(integer) 2<br>56<br>127.0.0.1:6379&gt; lrange list 0 -1<br>57</p>
+<ol>
+<li>“three”<br>58</li>
+<li>“three”<br>59</li>
+<li>“one”<br>60</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>61<br>​<br>62<br>============================================================================<br>63<br>127.0.0.1:6379&gt; rpush list hello1 hello2 hello3 hello4<br>64<br>(integer) 4<br>65<br>127.0.0.1:6379&gt; lrange list 0 -1<br>66</p>
+<ol>
+<li>“hello1”<br>67</li>
+<li>“hello2”<br>68</li>
+<li>“hello3”<br>69</li>
+<li>“hello4”<br>70</li>
+</ol>
+<p>127.0.0.1:6379&gt; ltrim list 1 2  （ltrim）截断，会改变list<br>71<br>OK<br>72<br>127.0.0.1:6379&gt; lrange list 0 -1<br>73</p>
+<ol>
+<li>“hello2”<br>74</li>
+<li>“hello3”<br>75</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>76<br>​<br>77<br>============================================================================<br>78<br>rpoplpush   移除list的最后一个值并添加到一个其他list集合中<br>79<br>​<br>80<br>127.0.0.1:6379&gt; rpush list one two three four<br>81<br>(integer) 4<br>82<br>127.0.0.1:6379&gt; lrange list 0 -1<br>83</p>
+<ol>
+<li>“one”<br>84</li>
+<li>“two”<br>85</li>
+<li>“three”<br>86</li>
+<li>“four”<br>87</li>
+</ol>
+<p>127.0.0.1:6379&gt; rpoplpush list lymlist （rpoplpush）移除list的最后一个值并添加到一个其他list集合中<br>88<br>“four”<br>89<br>127.0.0.1:6379&gt; lrange list 0 -1<br>90</p>
+<ol>
+<li>“one”<br>91</li>
+<li>“two”<br>92</li>
+<li>“three”<br>93</li>
+</ol>
+<p>127.0.0.1:6379&gt; lrange lymlist 0 -1<br>94</p>
+<ol>
+<li>“four”<br>95</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>96<br>​<br>97<br>============================================================================<br>98<br>127.0.0.1:6379&gt; exists lsit<br>99<br>(integer) 0<br>100<br>127.0.0.1:6379&gt; lset list 0 hello<br>101<br>(error) ERR no such key<br>102<br>127.0.0.1:6379&gt; lpush list hello<br>103<br>(integer) 1<br>104<br>127.0.0.1:6379&gt; lrange list 0 -1<br>105</p>
+<ol>
+<li>“hello”<br>106</li>
+</ol>
+<p>127.0.0.1:6379&gt; lset list 0 lym  (lset)替换掉原有的值<br>107<br>OK<br>108<br>127.0.0.1:6379&gt; lrange list 0 -1<br>109</p>
+<ol>
+<li>“lym”<br>110</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>111<br>​<br>112<br>============================================================================<br>113<br>127.0.0.1:6379&gt; rpush list 1 2 3 4 5<br>114<br>(integer) 5<br>115<br>127.0.0.1:6379&gt; lrange list 0 -1<br>116</p>
+<ol>
+<li>“1”<br>117</li>
+<li>“2”<br>118</li>
+<li>“3”<br>119</li>
+<li>“4”<br>120</li>
+<li>“5”<br>121</li>
+</ol>
+<p>127.0.0.1:6379&gt; linsert list before 3 lym  （linsert）向list集合中的第3个值的前面（before）添加一个值<br>122<br>(integer) 6<br>123<br>127.0.0.1:6379&gt; lrange list 0 -1<br>124</p>
+<ol>
+<li>“1”<br>125</li>
+<li>“2”<br>126</li>
+<li>“lym”<br>127</li>
+<li>“3”<br>128</li>
+<li>“4”<br>129</li>
+<li>“5”<br>130</li>
+</ol>
+<p>127.0.0.1:6379&gt; linsert list after 4 pcy  （linsert）向list集合中的第4个值的后面（after）添加一个值<br>131<br>(integer) 7<br>132<br>127.0.0.1:6379&gt; lrange list 0 -1<br>133</p>
+<ol>
+<li>“1”<br>134</li>
+<li>“2”<br>135</li>
+<li>“lym”<br>136</li>
+<li>“3”<br>137</li>
+<li>“4”<br>138</li>
+<li>“pcy”<br>139</li>
+<li>“5”<br>140</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>141<br>​<br><img src="Redis.assets/image-20200905112959284.png" alt="image-20200905112959284"></p>
+<p>4、Set（集合）<br>set中的值是不能重复的</p>
+<p>1<br>127.0.0.1:6379&gt; sadd myset hello   （sadd）添加一个set值<br>2<br>(integer) 1<br>3<br>127.0.0.1:6379&gt; sadd myset lym      （sadd）添加一个set值<br>4<br>(integer) 1<br>5<br>127.0.0.1:6379&gt; sadd myset love_lym     （sadd）添加一个set值<br>6<br>(integer) 1<br>7<br>127.0.0.1:6379&gt; smembers myset      （smembers）显示这个set集合中的所有值<br>8</p>
+<ol>
+<li>“love_lym”<br>9</li>
+<li>“lym”<br>10</li>
+<li>“hello”<br>11</li>
+</ol>
+<p>127.0.0.1:6379&gt; sismember myset hello  （sismember）判断这个值在这个set集合中是否存在<br>12<br>(integer) 1<br>13<br>127.0.0.1:6379&gt; sismember myset world   （sismember）存在返回1不存在返回2<br>14<br>(integer) 0<br>15<br>127.0.0.1:6379&gt; scard myset  （scard）获取这个set集合的长度<br>16<br>(integer) 3<br>17<br>127.0.0.1:6379&gt; sadd myset pcy  （sadd）添加一个set值<br>18<br>(integer) 1<br>19<br>127.0.0.1:6379&gt; scard myset  （scard）获取这个set集合的长度<br>20<br>(integer) 4<br>21<br>127.0.0.1:6379&gt; srem myset hello   （srem）在set集合中移除一个指定值<br>22<br>(integer) 1<br>23<br>127.0.0.1:6379&gt; scard myset   （scard）获取这个set集合的长度<br>24<br>(integer) 3<br>25<br>127.0.0.1:6379&gt; smembers myset  （smembers）显示这个set集合中的所有值<br>26</p>
+<ol>
+<li>“love_lym”<br>27</li>
+<li>“pcy”<br>28</li>
+<li>“lym”<br>29</li>
+</ol>
+<p>127.0.0.1:6379&gt; srandmember myset  （srandmember）在set集合中随机取1个值<br>30<br>“lym”<br>31<br>127.0.0.1:6379&gt; srandmember myset   （srandmember）在set集合中随机取1个值<br>32<br>“pcy”<br>33<br>127.0.0.1:6379&gt; srandmember myset 2    （srandmember）在set集合中随机取2个值<br>34</p>
+<ol>
+<li>“pcy”<br>35</li>
+<li>“lym”<br>36</li>
+</ol>
+<p>127.0.0.1:6379&gt; spop myset  （spop）随机移除一个值<br>37<br>“love_lym”<br>38<br>127.0.0.1:6379&gt; spop myset  （spop）随机移除一个值<br>39<br>“pcy”<br>40<br>127.0.0.1:6379&gt;<br>41<br>​<br>42<br>================================================================<br>43<br>#将一个指定的值移动到另一个set集合中<br>44<br>127.0.0.1:6379&gt; sadd myset lym pcy hello<br>45<br>(integer) 3<br>46<br>127.0.0.1:6379&gt; smembers myset<br>47</p>
+<ol>
+<li>“pcy”<br>48</li>
+<li>“hello”<br>49</li>
+<li>“lym”<br>50</li>
+</ol>
+<p>127.0.0.1:6379&gt; sadd myset2 lympcy<br>51<br>(integer) 1<br>52<br>127.0.0.1:6379&gt; smembers myset2<br>53</p>
+<ol>
+<li>“lympcy”<br>54</li>
+</ol>
+<p>127.0.0.1:6379&gt; smove myset myset2 hello  （smove）将myset中的hello移动到myset2<br>55<br>(integer) 1<br>56<br>127.0.0.1:6379&gt; smembers myset<br>57</p>
+<ol>
+<li>“pcy”<br>58</li>
+<li>“lym”<br>59</li>
+</ol>
+<p>127.0.0.1:6379&gt; smembers myset2<br>60</p>
+<ol>
+<li>“lympcy”<br>61</li>
+<li>“hello”<br>62</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>63<br>​<br>64<br>================================================================<br>65<br>共同关注的实现（交集）<br>66<br>127.0.0.1:6379&gt; sadd myset a b c<br>67<br>(integer) 3<br>68<br>127.0.0.1:6379&gt; sadd myset2 c d e<br>69<br>(integer) 3<br>70<br>127.0.0.1:6379&gt; sdiff myset myset2  （sdiff）差集<br>71</p>
+<ol>
+<li>“a”<br>72</li>
+<li>“b”<br>73</li>
+</ol>
+<p>127.0.0.1:6379&gt; sinter myset myset2  （sinter）交集<br>74</p>
+<ol>
+<li>“c”<br>75</li>
+</ol>
+<p>127.0.0.1:6379&gt; sunion myset myset2   （sunion）并集<br>76</p>
+<ol>
+<li>“c”<br>77</li>
+<li>“a”<br>78</li>
+<li>“b”<br>79</li>
+<li>“d”<br>80</li>
+<li>“e”<br>81</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>5、Hash（哈希）<br>类似Map集合，key-Map集合</p>
+<p>127.0.0.1:6379&gt; hset myhash one lym   （hset）添加一个Hash（myhash==key）（one lym == Map）<br>(integer) 1<br>127.0.0.1:6379&gt; hset myhash two pcy<br>(integer) 1<br>127.0.0.1:6379&gt; hmset myhasx three hello four world  （hmset）添加多个Map<br>OK<br>127.0.0.1:6379&gt; hget myhash one  （hget）通过Map中的key来获取一个value<br>“lym”<br>127.0.0.1:6379&gt; hmget myhash one two    （hmget）通过Map中的key来获取多个value</p>
+<ol>
+<li>“lym”</li>
+<li>“pcy”</li>
+</ol>
+<p>127.0.0.1:6379&gt; hgetall myhash  （hgetall）获取Hash中的Map</p>
+<ol>
+<li>“one”</li>
+<li>“lym”</li>
+<li>“two”</li>
+<li>“pcy”</li>
+</ol>
+<p>127.0.0.1:6379&gt; hdel myhash one  （hdel）删除hash指定的key<br>(integer) 1<br>127.0.0.1:6379&gt; hgetall myhash</p>
+<ol>
+<li>“two”</li>
+<li>“pcy”</li>
+</ol>
+<p>127.0.0.1:6379&gt; hlen myhash  （hlen）获取hash的长度<br>(integer) 1<br>127.0.0.1:6379&gt; hexists myhash two  （hexists）判断Hash中的key是否存在<br>(integer) 1<br>127.0.0.1:6379&gt; hkeys myhash  （hkeys）获取Hash中所有的key</p>
+<ol>
+<li>“two”</li>
+</ol>
+<p>127.0.0.1:6379&gt; hvals myhash    （hvals）获取Hash中所有的value</p>
+<ol>
+<li>“pcy”</li>
+</ol>
+<p>127.0.0.1:6379&gt; hset myhash num 1<br>(integer) 1<br>127.0.0.1:6379&gt; hincrby myhash num 1  （hincrby）自增1<br>(integer) 2<br>127.0.0.1:6379&gt; hincrby myhash num 1<br>(integer) 3<br>127.0.0.1:6379&gt; hincrby myhash num -1    （hincrby）自增-1<br>(integer) 2<br>127.0.0.1:6379&gt; hsetnx myhash test cs    （hsetnx）不存在就创建<br>(integer) 1<br>127.0.0.1:6379&gt; hsetnx myhash test test      （hsetnx）存在就失败<br>(integer) 0<br>127.0.0.1:6379&gt;<br>6、Zset（有序集合）<br>1<br>127.0.0.1:6379&gt; zadd myset 1 one  （zadd）添加一个值<br>2<br>(integer) 1<br>3<br>127.0.0.1:6379&gt; zadd myset 2 two 3 three    （zadd）添加多个值<br>4<br>(integer) 2<br>5<br>127.0.0.1:6379&gt; zrange myset 0 -1   （zrange）获取Zset中的值<br>6</p>
+<ol>
+<li>“one”<br>7</li>
+<li>“two”<br>8</li>
+<li>“three”<br>9</li>
+</ol>
+<p>127.0.0.1:6379&gt; zrangebyscore myset -inf +inf （zrangebyscore）排序（-inf -无穷 +inf +无穷） 从小到大排序<br>10</p>
+<ol>
+<li>“one”<br>11</li>
+<li>“two”<br>12</li>
+<li>“three”<br>13</li>
+</ol>
+<p>127.0.0.1:6379&gt; zrevrange myset 0 -1  从大到小排序<br>14</p>
+<ol>
+<li>“two”<br>15</li>
+<li>“one”<br>16</li>
+</ol>
+<p>127.0.0.1:6379&gt; zrangebyscore myset -inf +inf withscores  排序并且携带上值<br>17</p>
+<ol>
+<li>“one”<br>18</li>
+<li>“1”<br>19</li>
+<li>“two”<br>20</li>
+<li>“2”<br>21</li>
+<li>“three”<br>22</li>
+<li>“3”<br>23</li>
+</ol>
+<p>127.0.0.1:6379&gt; zrem myset three  （zrem）移除一个值<br>24<br>(integer) 1<br>25<br>127.0.0.1:6379&gt; zrange myset 0 -1<br>26</p>
+<ol>
+<li>“one”<br>27</li>
+<li>“two”<br>28</li>
+</ol>
+<p>127.0.0.1:6379&gt; zcard myset  （zcard）获取长度<br>29<br>(integer) 2<br>30<br>127.0.0.1:6379&gt; zcount myset 1 3  获取区间的成员数量<br>31<br>(integer) 2<br>32<br>127.0.0.1:6379&gt;<br>三种特殊数据类型<br>1、geospatial（地理位置）<br>朋友的定位，附近的人，打车距离的计算</p>
+<p>Redis的Geo在redis3.2就推出了，这个功能可以推算地理位置的信息，比如说两地之间的距离，方圆几里的人</p>
+<p>只有6个命令</p>
+<p>1<br>#geoadd  添加地理位置<br>2<br>127.0.0.1:6379&gt; geoadd china:city 116.40 39.90 beijing  （geoadd） （china:city）key  （116.40 39.90 beijing）                                                                                        纬度   经度  名称<br>3<br>(integer) 1<br>4<br>127.0.0.1:6379&gt; geoadd china:city 121.47 31.23 shanghai<br>5<br>(integer) 1<br>6<br>127.0.0.1:6379&gt; geoadd china:city 106.50 29.53 chongqi 114.05 22.52 shengzhen<br>7<br>(integer) 2<br>8<br>127.0.0.1:6379&gt; geoadd china:city 120.16 30.24 hangzhou 108.96 34.26 xian<br>9<br>(integer) 2<br>10<br>127.0.0.1:6379&gt;<br>11<br>​<br>12<br>#geopos 获取城市的经纬度<br>13<br>127.0.0.1:6379&gt; geopos china:city beijing  （geopos）获取指定城市的经纬度<br>14</p>
+<ol>
+<li><ol>
+<li>“116.39999896287918”<br>15</li>
+<li>“39.900000091670925”<br>16</li>
+</ol>
+</li>
+</ol>
+<p>127.0.0.1:6379&gt; geopos china:city shanghai chongqi<br>17</p>
+<ol>
+<li><ol>
+<li>“121.47000163793564”<br>18</li>
+<li>“31.229999039757836”<br>19</li>
+</ol>
+</li>
+<li><ol>
+<li>“106.49999767541885”<br>20</li>
+<li>“29.529999579006592”<br>21</li>
+</ol>
+</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>22<br>​<br>23<br>#geodist 两个经纬度之间的距离<br>24<br>单位：m表示米<br>25<br>     km表示千米<br>26<br>     mi表示英里<br>27<br>     ft表示英尺<br>28<br>127.0.0.1:6379&gt; geodist china:city beijing shanghai  （geodist） 两个经纬度之间的距离<br>29<br>“1067378.7564”<br>30<br>127.0.0.1:6379&gt; geodist china:city beijing shanghai km  （km ）转换单位<br>31<br>“1067.3788”<br>32<br>127.0.0.1:6379&gt;<br>33<br>​<br>34<br>#georadius 以给定的经纬度为中心，找出某一半径内的元素<br>35<br>127.0.0.1:6379&gt; georadius china:city 110 30 1000 km  （110 30）经纬度 （1000 km）半径单位为km<br>36</p>
+<ol>
+<li>“chongqi”<br>37</li>
+<li>“xian”<br>38</li>
+<li>“shengzheng”<br>39</li>
+<li>“hangzhou”<br>40</li>
+</ol>
+<p>127.0.0.1:6379&gt;  georadius china:city 110 30 500 km<br>41</p>
+<ol>
+<li>“chongqi”<br>42</li>
+<li>“xian”<br>43</li>
+</ol>
+<p>127.0.0.1:6379&gt;  georadius china:city 110 30 500 km withdist （withdist）显示直线距离<br>44</p>
+<ol>
+<li><ol>
+<li>“chongqi”<br>45</li>
+<li>“341.9374”<br>46</li>
+</ol>
+</li>
+<li><ol>
+<li>“xian”<br>47</li>
+<li>“483.8340”<br>48</li>
+</ol>
+</li>
+</ol>
+<p>127.0.0.1:6379&gt;  georadius china:city 110 30 500 km withcoord  （withcoord）显示经纬度<br>49</p>
+<ol>
+<li><ol>
+<li>“chongqi”<br>50</li>
+<li><ol>
+<li>“106.49999767541885”<br>51</li>
+<li>“29.529999579006592”<br>52</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>“xian”<br>53</li>
+<li><ol>
+<li>“108.96000176668167”<br>54</li>
+<li>“34.2599996441893”<br>55</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>127.0.0.1:6379&gt; georadius china:city 110 30 500 km withdist withcoord count 1  （count）设置只要一个<br>56</p>
+<ol>
+<li><ol>
+<li>“chongqi”<br>57</li>
+<li>“341.9374”<br>58</li>
+<li><ol>
+<li>“106.49999767541885”<br>59</li>
+<li>“29.529999579006592”<br>60</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>61<br>​<br>62<br>#georadiusbymember  以给定的城市为中心，找出某一半径内的元素<br>63<br>127.0.0.1:6379&gt; georadiusbymember china:city beijing 1000 km<br>64</p>
+<ol>
+<li>“beijing”<br>65</li>
+<li>“xian”<br>66</li>
+</ol>
+<p>127.0.0.1:6379&gt; georadiusbymember china:city shanghai 400 km<br>67</p>
+<ol>
+<li>“hangzhou”<br>68</li>
+<li>“shanghai”<br>69</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>70<br>​<br>71<br>#geohash 返回一个或者多个位置元素的经纬度用GeoHash表示<br>72<br>         将二维的经纬度转换为一维的字符串，如果两个字符串越接近，那么距离越近<br>73<br>127.0.0.1:6379&gt; geohash china:city beijing chongqi<br>74</p>
+<ol>
+<li>“wx4fbxxfke0”<br>75</li>
+<li>“wm5xzrybty0”<br>76</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>77<br>​<br>2、hyperloglog（基数存储）<br>什么是基数</p>
+<p>比如：A{1,3,5,7,9}   B{1,3,5,7,9,11}</p>
+<p>基数：不重复的数</p>
+<p>简介：redis2.8.9版本就更新了hyperloglog数据结构</p>
+<p>redis hyperloglog基数统计算法</p>
+<p>网页的UV(一个人访问一个网站多次，但是还是算作一个人)</p>
+<p>127.0.0.1:6379&gt; pfadd mykey a b c d e f g h i j  （pfadd）创建一组元素<br>(integer) 1<br>127.0.0.1:6379&gt; pfcount mykey    （pfcount）获取元素的长度<br>(integer) 10<br>127.0.0.1:6379&gt; pfadd mykey2 i j z x c v b n<br>(integer) 1<br>127.0.0.1:6379&gt; pfcount mykey2<br>(integer) 8<br>127.0.0.1:6379&gt; pfmerge mykey3 mykey mykey2  （pfmerge）将两组元素并集为新的一组元素<br>OK<br>127.0.0.1:6379&gt; pfcount mykey3<br>(integer) 14<br>127.0.0.1:6379&gt;<br>3、bitmap（位存储）<br>统计用户信息。比如活跃 ，不活跃   。 登录 ， 未登录 的人数</p>
+<p>BitMap位图，数据结构，都是操作二进制位来进行记录，就只有0和1两个状态</p>
+<p>1<br>#这里从0开始到6来依次表示星期1到星期7 ，后面的0和1可以当做true和false<br>2<br>127.0.0.1:6379&gt; setbit sign 0 1<br>3<br>(integer) 0<br>4<br>127.0.0.1:6379&gt;  setbit sign 1 1<br>5<br>(integer) 0<br>6<br>127.0.0.1:6379&gt;  setbit sign 2 0<br>7<br>(integer) 0<br>8<br>127.0.0.1:6379&gt;  setbit sign 3 1<br>9<br>(integer) 0<br>10<br>127.0.0.1:6379&gt;  setbit sign 4 0<br>11<br>(integer) 0<br>12<br>127.0.0.1:6379&gt;  setbit sign 5 1<br>13<br>(integer) 0<br>14<br>127.0.0.1:6379&gt;  setbit sign 6 1<br>15<br>(integer) 0<br>16<br>127.0.0.1:6379&gt; getbit sign 1  （getbit）通过序号获取值（0或1）<br>17<br>(integer) 1<br>18<br>127.0.0.1:6379&gt; getbit sign 4<br>19<br>(integer) 0<br>20<br>127.0.0.1:6379&gt; bitcount sign   (bitcount)统计有几个1<br>21<br>(integer) 5<br>22<br>127.0.0.1:6379&gt;<br>事务<br>Redis单条命令是保证原子性的，但是事务不保证原子性</p>
+<p>Redis事务没有隔离级别的概念</p>
+<p>Redis事务本质：一组命令的集合，一个事务中的所有命令都会被序列化，在事务执行的过程中，会按照顺序执行</p>
+<p>一次性、顺序性、排他性。执行一系列的命令</p>
+<p>所有的命令在事务中，并没有被直接执行，只有发起执行命令的时候才会执行（Exec）</p>
+<p>1<br>—- 队列 set  set  set  执行 —–<br>Redis事务：</p>
+<p>开启事务（multi）</p>
+<p>命令入队（….）</p>
+<p>执行事务（exec）</p>
+<p>正常执行事务<br>127.0.0.1:6379&gt; multi   开启事务<br>OK<br>127.0.0.1:6379&gt; set lym lym        命令入队<br>QUEUED<br>127.0.0.1:6379&gt; set pcy pcy        命令入队<br>QUEUED<br>127.0.0.1:6379&gt; get lym        命令入队<br>QUEUED<br>127.0.0.1:6379&gt; get pcy        命令入队<br>QUEUED<br>127.0.0.1:6379&gt; exec   执行事务</p>
+<ol>
+<li>OK</li>
+<li>OK</li>
+<li>“lym”</li>
+<li>“pcy”</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>放弃事务<br>127.0.0.1:6379&gt; multi<br>OK<br>127.0.0.1:6379&gt; set k1 v1<br>QUEUED<br>127.0.0.1:6379&gt; set k2 v2<br>QUEUED<br>127.0.0.1:6379&gt; discard        放弃事务<br>OK<br>127.0.0.1:6379&gt; get k1   事务中的队列命令都不会被执行<br>(nil)<br>127.0.0.1:6379&gt; get k2<br>(nil)<br>127.0.0.1:6379&gt;<br>1<br>编辑型异常（java中是代码有问题–在redis就是命令有错），事务中所有的命令都不会被执行<br>2<br>127.0.0.1:6379&gt; multi<br>3<br>OK<br>4<br>127.0.0.1:6379&gt; set k1 v1<br>5<br>QUEUED<br>6<br>127.0.0.1:6379&gt; set k2 v2<br>7<br>QUEUED<br>8<br>127.0.0.1:6379&gt; set k3 v3<br>9<br>QUEUED<br>10<br>127.0.0.1:6379&gt; getset k3   错误的命令<br>11<br>(error) ERR wrong number of arguments for ‘getset’ command<br>12<br>127.0.0.1:6379&gt; set k4 v4<br>13<br>QUEUED<br>14<br>127.0.0.1:6379&gt; set k5 v5<br>15<br>QUEUED<br>16<br>127.0.0.1:6379&gt; exec    执行事务报错<br>17<br>(error) EXECABORT Transaction discarded because of previous errors.<br>18<br>127.0.0.1:6379&gt; get k2   所有的命令都不会被执行<br>19<br>(nil)<br>20<br>127.0.0.1:6379&gt; get k4   所有的命令都不会被执行<br>21<br>(nil)<br>22<br>127.0.0.1:6379&gt;<br>23<br>​<br>1<br>运行时异常（如果事务队列中出现了语法型问题，那么执行命令的时候，其他命令可以正常执行），错误命令抛出异常<br>2<br>127.0.0.1:6379&gt; set k1 “v1”  这里set了一个值但不是数字<br>3<br>OK<br>4<br>127.0.0.1:6379&gt; multi<br>5<br>OK<br>6<br>127.0.0.1:6379&gt; incr k1     这里给k1的值来自增（k1的值是字符串）<br>7<br>QUEUED<br>8<br>127.0.0.1:6379&gt; set k2 v2<br>9<br>QUEUED<br>10<br>127.0.0.1:6379&gt; set k3 v3<br>11<br>QUEUED<br>12<br>127.0.0.1:6379&gt; get k3<br>13<br>QUEUED<br>14<br>127.0.0.1:6379&gt; exec<br>15</p>
+<ol>
+<li>(error) ERR value is not an integer or out of range   执行的时候报错但不影响事务中其他的命令的执行<br>16</li>
+<li>OK<br>17</li>
+<li>OK<br>18</li>
+<li>“v3”<br>19</li>
+</ol>
+<p>127.0.0.1:6379&gt; get k2<br>20<br>“v2”<br>21<br>127.0.0.1:6379&gt; get k3<br>22<br>“v3”<br>23<br>127.0.0.1:6379&gt;<br>锁：Redis可以实现乐观锁（watch）</p>
+<p>悲观锁：</p>
+<p>很悲观，认为什么时候都会出现问题，无论做什么都会加锁</p>
+<p>乐观锁：</p>
+<p>很乐观，认为什么时候都不会出现问题，无论做什么都不会加锁。在更新数据的时候去判断一下，在此期间是否有人改动过这个数据（version）</p>
+<p>获取version</p>
+<p>更新的时候比较version</p>
+<p>Redis的监测测试</p>
+<p>正常执行成功<br>127.0.0.1:6379&gt; set money 100<br>OK<br>127.0.0.1:6379&gt; set out 0<br>OK<br>127.0.0.1:6379&gt; watch money   监控money<br>OK<br>127.0.0.1:6379&gt; multi<br>OK<br>127.0.0.1:6379&gt; decrby money 20  减少20<br>QUEUED<br>127.0.0.1:6379&gt; incrby out 20  增加20<br>QUEUED<br>127.0.0.1:6379&gt; exec</p>
+<ol>
+<li>(integer) 80</li>
+<li>(integer) 20</li>
+</ol>
+<p>127.0.0.1:6379&gt;<br>测试多线程修改值，使用watch可以当做redis的乐观锁操作</p>
+<p>1<br>127.0.0.1:6379&gt;watch money   监控money<br>2<br>OK<br>3<br>127.0.0.1:6379&gt; multi<br>4<br>OK<br>5<br>127.0.0.1:6379&gt; decrby money 10  减少10<br>6<br>QUEUED<br>7<br>127.0.0.1:6379&gt; incrby out 10  增加10<br>8<br>QUEUED<br>9<br>127.0.0.1:6379&gt; exec   执行之前，另外一个线程，修改了我们的值，这个时候，就会导致事务失败<br>10<br>(nil)<br>11<br>​<br>12<br>​<br>13<br>127.0.0.1:6379&gt; unwatch  1.如果发现事务执行失败就先解锁（unwatch）<br>14<br>OK<br>15<br>127.0.0.1:6379&gt;watch money   2.再次监控money，获取最新的money<br>16<br>OK<br>17<br>127.0.0.1:6379&gt; multi<br>18<br>OK<br>19<br>127.0.0.1:6379&gt; decrby money 1  减少1<br>20<br>QUEUED<br>21<br>127.0.0.1:6379&gt; incrby out 1  增加1<br>22<br>QUEUED<br>23<br>127.0.0.1:6379&gt; exec    3.比对监控的是是否发生变化，如果没有就成功，发生了就失败<br>24</p>
+<ol>
+<li>(integer) 999<br>25</li>
+<li>(integer) 1<br>Jedis<br>我们要使用java来操作Redis</li>
+</ol>
+<p>什么是Jedis：是Redis官方推荐的java连接工具，使用java操作Redis的中间件</p>
+<p>1、导入对应的依赖</p>
+<p>1<br><dependencies><br>2<br>    <!--导入Jedis的包--><br>3<br>    <dependency><br>4<br>        <groupId>redis.clients</groupId><br>5<br>        <artifactId>jedis</artifactId><br>6<br>        <version>3.2.0</version><br>7<br>    </dependency><br>8<br>​<br>9<br>    <dependency><br>10<br>        <groupId>com.alibaba</groupId><br>11<br>        <artifactId>fastjson</artifactId><br>12<br>        <version>1.2.62</version><br>13<br>    </dependency><br>14<br></dependencies><br>2、编码测试：</p>
+<p>连接数据库</p>
+<p>package com.lym;</p>
+<p>import redis.clients.jedis.Jedis;</p>
+<p>public class TestPing {</p>
+<pre><code>public static void main(String[] args) &#123;
+    //1、new一个Jedis对象
+    Jedis jedis = new Jedis(&quot;127.0.0.1&quot;,6379);
+    //Jedis所有的命令就是我们之前学习的命令
+    System.out.println(jedis.ping());//测试连接
+    jedis.close();//关闭连接
+&#125;
+</code></pre>
+<p>}<br><img src="Redis.assets/image-20200907155408592.png" alt="image-20200907155408592"></p>
+<p>操作命令</p>
+<p>断开连接 </p>
+<p>Jedis常用的API<br><img src="Redis.assets/image-20200907155652983.png" alt="image-20200907155652983"></p>
+<p>String </p>
+<p><img src="Redis.assets/image-20200907155852766.png" alt="image-20200907155852766"></p>
+<p><img src="Redis.assets/image-20200907155914861.png" alt="image-20200907155914861"></p>
+<p>List</p>
+<p><img src="Redis.assets/image-20200907160001485.png" alt="image-20200907160001485"></p>
+<p><img src="Redis.assets/image-20200907160020750.png" alt="image-20200907160020750"></p>
+<p>set</p>
+<p><img src="Redis.assets/image-20200907160120904.png" alt="image-20200907160120904"></p>
+<p><img src="Redis.assets/image-20200907160137347.png" alt="image-20200907160137347"></p>
+<p>Hash</p>
+<p><img src="Redis.assets/image-20200907160254774.png" alt="image-20200907160254774"></p>
+<p>Zset</p>
+<p>通过Jedis再次理解事务</p>
+<p>1<br>package com.lym;<br>2<br>​<br>3<br>import com.alibaba.fastjson.JSONObject;<br>4<br>import redis.clients.jedis.Jedis;<br>5<br>import redis.clients.jedis.Transaction;<br>6<br>​<br>7<br>public class TestTX {<br>8<br>​<br>9<br>    public static void main(String[] args) {<br>10<br>        Jedis jedis = new Jedis(“127.0.0.1”, 6379);<br>11<br>        System.out.println(jedis.ping());<br>12<br>​<br>13<br>        jedis.flushDB();//清空当前数据库数据<br>14<br>​<br>15<br>        //设置数据<br>16<br>        JSONObject jsonObject = new JSONObject();<br>17<br>        jsonObject.put(“hello”,”world”);<br>18<br>        jsonObject.put(“name”,”lym”);<br>19<br>        //开启事务<br>20<br>        Transaction multi = jedis.multi();<br>21<br>        String result = jsonObject.toJSONString();<br>22<br>​<br>23<br>        try{<br>24<br>​<br>25<br>            multi.set(“user1”,result);<br>26<br>            multi.set(“user2”,result);<br>27<br>​<br>28<br>            //设置一个异常<br>29<br>            int i = 1/0;<br>30<br>​<br>31<br>            multi.exec();//执行事务<br>32<br>​<br>33<br>        }catch (Exception e){<br>34<br>            multi.discard();//放弃事务<br>35<br>            e.printStackTrace();<br>36<br>        }finally {<br>37<br>            System.out.println(jedis.get(“user1”));<br>38<br>            System.out.println(jedis.get(“user2”));<br>39<br>            jedis.close();//关闭连接<br>40<br>        }<br>41<br>    }<br>42<br>​<br>43<br>}<br>44<br>​<br><img src="Redis.assets/image-20200907161452251.png" alt="image-20200907161452251"></p>
+<p>SpringBoot整合Redis<br>SpringBoot操作数据：spring-data   jpa  jdbc  mongodb  redis </p>
+<p>SpringData也是和SpringBoot齐名的框架</p>
+<p>说明：在SpringBoot2.x之后，原来的Jedis被替换成了lettuce</p>
+<p>Jedis：采用的是直连，多个线程操作的话是不安全的，如果想要避免不安全，使用Jedis pool连接池，更像BIO模式</p>
+<p>lettuce：采用netty，实例可以在多个线程中进行共享，不存在线程不安全的情况，可以减少线程数量，更像NIO模式</p>
+<p>源码分析：</p>
+<p>1<br>​<br>2<br>@Configuration(<br>3<br>    proxyBeanMethods = false<br>4<br>)<br>5<br>@ConditionalOnClass({RedisOperations.class})<br>6<br>@EnableConfigurationProperties({RedisProperties.class})<br>7<br>@Import({LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class})<br>8<br>public class RedisAutoConfiguration {<br>9<br>    public RedisAutoConfiguration() {<br>10<br>    }<br>11<br>​<br>12<br>    @Bean<br>13<br>    @ConditionalOnMissingBean(<br>14<br>        name = {“redisTemplate”}<br>15<br>    )//根据上面这个注解的配置，我们可以定义一个name名称为redisTemplate的方法来重写这个默认的<br>16<br>    public RedisTemplate&lt;Object, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {<br>17<br>        //默认的RedisTamplate没有过多的设置，redis对象都是需要序列化的<br>18<br>        //两个泛型都是object的类型，我们使用一般都是需要类型转换的<br>19<br>        RedisTemplate&lt;Object, Object&gt; template = new RedisTemplate();<br>20<br>        template.setConnectionFactory(redisConnectionFactory);<br>21<br>        return template;<br>22<br>    }<br>23<br>​<br>24<br>    @Bean<br>25<br>    @ConditionalOnMissingBean //由于String是redis中最常用的类型，所以说单独提出来一个bean<br>26<br>    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {<br>27<br>        StringRedisTemplate template = new StringRedisTemplate();<br>28<br>        template.setConnectionFactory(redisConnectionFactory);<br>29<br>        return template;<br>30<br>    }<br>31<br>}<br>导入依赖</p>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+配置连接
+
+<p>#配置redis<br>spring.redis.host=127.0.0.1<br>spring.redis.port=6379<br>测试。</p>
+<p>@SpringBootTest<br>class Redis02SpringbootApplicationTests {</p>
+<pre><code>//注入redis
+@Autowired
+//@Qualifier(&quot;redisTemplate&quot;)
+private RedisTemplate&lt;String,Object&gt; redisTemplate;
+
+@Test
+void contextLoads() &#123;
+
+    //redisTemplate
+    //opsForValue  操作字符串 类似于String
+    //opsForList   操作List
+    //opsFor...       操作....
+    //redisTemplate.opsForList();
+    /*
+    RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
+    connection.flushAll();
+    connection.flushDb();
+    */
+    redisTemplate.opsForValue().set(&quot;mykey&quot;,&quot;刘英明&quot;);
+    System.out.println(redisTemplate.opsForValue().get(&quot;mykey&quot;));
+&#125;
+
+@Test
+public void test() throws JsonProcessingException &#123;
+    //真实的开发一般都是使用json来传递对象
+    User user = new User(&quot;lym&quot;,20);
+    String jsonUser = new ObjectMapper().writeValueAsString(user);
+    redisTemplate.opsForValue().set(&quot;user&quot;,user);
+    System.out.println(redisTemplate.opsForValue().get(&quot;user&quot;));
+&#125;
+</code></pre>
+<p>}<br>Redis.conf详解<br>启动的时候就是通过配置文件来启动的</p>
+<p>单位<br><img src="Redis.assets/image-20200908080009310.png" alt="image-20200908080009310"></p>
+<p>配置文件units单位，对大小写不敏感</p>
+<p>包含INCLUDES<br><img src="Redis.assets/image-20200908080243105.png" alt="image-20200908080243105"></p>
+<p>就想学习spring一样里面的xml配置文件import，include</p>
+<p>1<br>网络NETWORK<br>1<br>bind 127.0.0.1    绑定的ip<br>2<br>protected-mode yes    是否受保护（yes/no）<br>3<br>port 6379    端口<br>1<br>通用GENERAL<br>1<br>daemonize  yes  以守护进程的方式运行，默认是no，我们需要自己开启为yes<br>2<br>pidfile /var/run/redis_6379.pid  如果以后台的方式运行（开启守护进程），我们就需要指定一个pid文件<br>3<br>loglevel notice  日志为生产环境<br>4<br>logfile “”   日志的文件位置名（如果为空就只是控制台输出）<br>5<br>databases 16   数据库的数量，默认是16个数据库<br>快照SNAPSHOTTING<br>1<br>快照SNAPSHOTTING<br>持久化，在规定的时间内，执行了多少次操作，则会持久化到文件.rdb   .aof</p>
+<p>redis是内存数据库，如果没有持久化，那么数据断电即失</p>
+<p>1<br>如果900秒内，至少有1个key进行了修改，我们就进行持久化操作<br>2<br>save 900 1<br>3<br>如果300秒内，至少有10个key进行了修改，我们就进行持久化操作<br>4<br>save 300 10<br>5<br>如果60秒内，至少有10000个key进行了修改，我们就进行持久化操作<br>6<br>save 60 10000<br>7<br>我们之后学习持久化会自己定义这个<br>8<br>​<br>9<br>stop-writes-on-bgsave-error yes   出现错误后是否继续进行工作<br>10<br>rdbcompression yes   是否压缩rdb文件，需要消耗一些cpu的资源<br>11<br>rdbchecksum yes    保存rdb文件的时候，进行错误的检查校验<br>12<br>dbfilename dump.rdb    rdb的文件名称<br>13<br>dir ./    rdb文件保存的目录<br>1<br>复制REPLICATION，在后面讲解主从复制的时候再来聊<br>1<br>安全SECURITY<br>1<br>可以在这里设置redis的密码，默认是没有密码<br><img src="Redis.assets/image-20200908082946762.png" alt="image-20200908082946762"></p>
+<p><img src="Redis.assets/image-20200908083431312.png" alt="image-20200908083431312"></p>
+<p>1<br>aof APPEND ONLY MODE（模式）<br>1<br>appendonly no   默认是不开启的，默认是使用rdb方式持久化的，在大部分所有情况下，rdb完全够用<br>2<br>appendfilename “appendonly.aof”  文件名称<br>3<br>​<br>4</p>
+<h1 id="appendfsync-always-每次修改都会sync"><a href="#appendfsync-always-每次修改都会sync" class="headerlink" title="appendfsync always    每次修改都会sync"></a>appendfsync always    每次修改都会sync</h1><p>5<br>appendfsync everysec   每秒执行一次sync,可能会丢失这1s的数据<br>6</p>
+<h1 id="appendfsync-no-不执行sync，这个时候，操作系统自己同步数据，速度最快"><a href="#appendfsync-no-不执行sync，这个时候，操作系统自己同步数据，速度最快" class="headerlink" title="appendfsync no    不执行sync，这个时候，操作系统自己同步数据，速度最快"></a>appendfsync no    不执行sync，这个时候，操作系统自己同步数据，速度最快</h1><p>7<br>​<br>具体的配置，在redis持久化中会进行详细的讲解</p>
+<p>Redis持久化<br>Redis是内存数据库，如果不能将内存中的数据库状态保存带磁盘，那么一旦服务器进程退出，服务器支的数据库状态也会消失。所以Redis提供了持久化功能</p>
+<p>RDB（Redis Database）</p>
+<p>1<br>什么是RDB<br><img src="Redis.assets/image-20200908084510673.png" alt="image-20200908084510673"></p>
+<p><img src="Redis.assets/image-20200908090042098.png" alt="image-20200908090042098"></p>
+<p><img src="Redis.assets/image-20200908090047927.png" alt="image-20200908090047927"></p>
+<p><img src="Redis.assets/image-20200908090107652.png" alt="image-20200908090107652"></p>
+<p><img src="Redis.assets/image-20200908090117044.png" alt="image-20200908090117044"></p>
+<p><img src="Redis.assets/image-20200908090125911.png" alt="image-20200908090125911"></p>
+<p><img src="Redis.assets/image-20200908090139291.png" alt="image-20200908090139291"></p>
+<p>AOF（Append Only File）</p>
+<p>将我们所有的命令都记录下来，history，恢复的时候就把这个文件全部再执行一遍</p>
+<p><img src="Redis.assets/image-20200908090512132.png" alt="image-20200908090512132"></p>
+<p><img src="Redis.assets/image-20200908090555083.png" alt="image-20200908090555083"></p>
+<p><img src="Redis.assets/image-20200908090713256.png" alt="image-20200908090713256"></p>
+<p><img src="Redis.assets/image-20200908090750233.png" alt="image-20200908090750233"></p>
+<p><img src="Redis.assets/image-20200908091617585.png" alt="image-20200908091617585"></p>
+<p><img src="Redis.assets/image-20200908091630111.png" alt="image-20200908091630111"></p>
+<p><img src="Redis.assets/image-20200908092107535.png" alt="image-20200908092107535"></p>
+<p><img src="Redis.assets/image-20200908092115903.png" alt="image-20200908092115903"></p>
+<p><img src="Redis.assets/image-20200908092419834.png" alt="image-20200908092419834"></p>
+<p><img src="Redis.assets/image-20200908092505517.png" alt="image-20200908092505517"></p>
+<p><img src="Redis.assets/image-20200908092555454.png" alt="image-20200908092555454"></p>
+<p>Redis发布订阅<br><img src="Redis.assets/image-20200908095257091.png" alt="image-20200908095257091"></p>
+<p><img src="Redis.assets/image-20200908095319613.png" alt="image-20200908095319613"></p>
+<p><img src="Redis.assets/image-20200908095334237.png" alt="image-20200908095334237"></p>
+<p><img src="Redis.assets/image-20200908095403025.png" alt="image-20200908095403025"></p>
+<p><img src="Redis.assets/image-20200908093855572.png" alt="image-20200908093855572"></p>
+<p><img src="Redis.assets/image-20200908093952773.png" alt="image-20200908093952773"></p>
+<p>Redis主从复制<br><img src="Redis.assets/image-20200908095512694.png" alt="image-20200908095512694"></p>
+<p><img src="Redis.assets/image-20200908095854976.png" alt="image-20200908095854976"></p>
+<p><img src="Redis.assets/image-20200908101320059.png" alt="image-20200908101320059"></p>
+<p><img src="Redis.assets/image-20200908101340739.png" alt="image-20200908101340739"></p>
+<p><img src="Redis.assets/image-20200908101350205.png" alt="image-20200908101350205"></p>
+<p><img src="Redis.assets/image-20200908101831608.png" alt="image-20200908101831608"></p>
+<p><img src="Redis.assets/image-20200908101914628.png" alt="image-20200908101914628"></p>
+<p><img src="Redis.assets/image-20200908101955629.png" alt="image-20200908101955629"></p>
+<p><img src="Redis.assets/image-20200908102429281.png" alt="image-20200908102429281"></p>
+<p><img src="Redis.assets/image-20200908102454629.png" alt="image-20200908102454629"></p>
+<p><img src="Redis.assets/image-20200908103308265.png" alt="image-20200908103308265"></p>
+<p><img src="Redis.assets/image-20200908105220517.png" alt="image-20200908105220517"></p>
+<p><img src="Redis.assets/image-20200908105254377.png" alt="image-20200908105254377"></p>
+<p><img src="Redis.assets/image-20200908105726677.png" alt="image-20200908105726677"></p>
+<p>哨兵模式（自动选举老大的模式）<br><img src="Redis.assets/image-20200908110038990.png" alt="image-20200908110038990"></p>
+<p><img src="Redis.assets/image-20200908110050898.png" alt="image-20200908110050898"></p>
+<p><img src="Redis.assets/image-20200908110159581.png" alt="image-20200908110159581"></p>
+<p><img src="Redis.assets/image-20200908110205834.png" alt="image-20200908110205834"></p>
+<p><img src="Redis.assets/image-20200908110409327.png" alt="image-20200908110409327"></p>
+<p><img src="Redis.assets/image-20200908162554272.png" alt="image-20200908162554272"></p>
+<p><img src="Redis.assets/image-20200908162739397.png" alt="image-20200908162739397"></p>
+<p><img src="Redis.assets/image-20200908162723870.png" alt="image-20200908162723870"></p>
+<p><img src="Redis.assets/image-20200908162825435.png" alt="image-20200908162825435"></p>
+<p><img src="Redis.assets/image-20200908162856182.png" alt="image-20200908162856182"></p>
+<p><img src="Redis.assets/image-20200908162904845.png" alt="image-20200908162904845"></p>
+<p><img src="Redis.assets/image-20200908163012230.png" alt="image-20200908163012230"></p>
+<p><img src="Redis.assets/image-20200908163023600.png" alt="image-20200908163023600"></p>
+<p><img src="Redis.assets/image-20200908163226720.png" alt="image-20200908163226720"></p>
+<p><img src="Redis.assets/image-20200908163315084.png" alt="image-20200908163315084"></p>
+<p><img src="Redis.assets/image-20200908163405370.png" alt="image-20200908163405370"></p>
+<p><img src="Redis.assets/image-20200908163422392.png" alt="image-20200908163422392"></p>
+<p>Redis缓存穿透和雪崩<br><img src="Redis.assets/image-20200908165931725.png" alt="image-20200908165931725"></p>
+<p><img src="Redis.assets/image-20200908165951265.png" alt="image-20200908165951265"></p>
+<p>缓存穿透（查不到）<br><img src="Redis.assets/image-20200908170009052.png" alt="image-20200908170009052"></p>
+<p><img src="Redis.assets/image-20200908170059769.png" alt="image-20200908170059769"></p>
+<p><img src="Redis.assets/image-20200908170109510.png" alt="image-20200908170109510"></p>
+<p>缓存击穿（量太大，缓存过期）<br><img src="Redis.assets/image-20200908170116102.png" alt="image-20200908170116102"></p>
+<p><img src="Redis.assets/image-20200908170139057.png" alt="image-20200908170139057"></p>
+<p><img src="Redis.assets/image-20200908170148484.png" alt="image-20200908170148484"></p>
+<p>缓存雪崩<br><img src="Redis.assets/image-20200908170202141.png" alt="image-20200908170202141"></p>
+<p><img src="Redis.assets/image-20200908170210654.png" alt="image-20200908170210654"></p>
+<p><img src="Redis.assets/image-20200908170219028.png" alt="image-20200908170219028"></p>
+<p><img src="Redis.assets/image-20200908170536853.png" alt="image-20200908170536853"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/04/22/hello-redis/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-titlemy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -221,59 +927,27 @@
 
 
   
-    <article id="post-hello-redis" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/04/22/hello-redis/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-hello-hexo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/21/hello-hexo/">从0到1 ，无代码创建个人博客</a>
+    </h1>
+  
+
+        
+        <a href="/2021/04/21/hello-hexo/" class="archive-article-date">
+  	<time datetime="2021-04-21T03:37:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-21</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="从0到1-，无代码创建个人博客"><a href="#从0到1-，无代码创建个人博客" class="headerlink" title="从0到1 ，无代码创建个人博客"></a>从0到1 ，无代码创建个人博客</h5><p>开发框架 hexo : <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></p>
+        <h2 id="从0到1-，无代码创建个人博客"><a href="#从0到1-，无代码创建个人博客" class="headerlink" title="从0到1 ，无代码创建个人博客"></a>从0到1 ，无代码创建个人博客</h2><p>开发框架 hexo : <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></p>
 <p>创建环境： node.js     +   git</p>
 <p>（这里需要使用这会使用一些最基本的git 操作！！！） </p>
 <p><em>Node.js</em> 是一个基于 Chrome V8 引擎的 <em>JavaScript</em> 运行环境， 下载链接：<a target="_blank" rel="noopener" href="http://nodejs.cn/download/">http://nodejs.cn/download/</a></p>
@@ -290,7 +964,7 @@
 <p>按照官网里面的流程出现问题;</p>
 <p><img src="img%5Cimage-20210421161110405.png" alt="image-20210421161110405"></p>
 <p>页面不显示的原因： 在“ npm install “ 下载的插件有问题！！</p>
-<p>报错npm ERR! code ELIFECYCLE<br>npm ERR! code ELIFECYCLE<br>npm ERR! errno 1<br>npm ERR! <a href="mailto:&#101;&#106;&#x73;&#x40;&#50;&#x2e;&#55;&#x2e;&#x34;">&#101;&#106;&#x73;&#x40;&#50;&#x2e;&#55;&#x2e;&#x34;</a> postinstall: <code> node ./postinstall.js</code><br>npm ERR! Exit status 1<br>npm ERR!<br>npm ERR! Failed at the <a href="mailto:&#101;&#106;&#115;&#x40;&#50;&#46;&#x37;&#x2e;&#52;">&#101;&#106;&#115;&#x40;&#50;&#46;&#x37;&#x2e;&#52;</a> postinstall script.<br>npm ERR! This is probably not a problem with npm. There is likely additional logging output above.</p>
+<p>报错npm ERR! code ELIFECYCLE<br>npm ERR! code ELIFECYCLE<br>npm ERR! errno 1<br>npm ERR! <a href="mailto:&#101;&#106;&#115;&#64;&#50;&#46;&#55;&#x2e;&#52;">&#101;&#106;&#115;&#64;&#50;&#46;&#55;&#x2e;&#52;</a> postinstall: <code> node ./postinstall.js</code><br>npm ERR! Exit status 1<br>npm ERR!<br>npm ERR! Failed at the <a href="mailto:&#101;&#x6a;&#x73;&#x40;&#x32;&#46;&#x37;&#x2e;&#52;">&#101;&#x6a;&#x73;&#x40;&#x32;&#46;&#x37;&#x2e;&#52;</a> postinstall script.<br>npm ERR! This is probably not a problem with npm. There is likely additional logging output above.</p>
 <p>npm ERR! A complete log of this run can be found in:<br>npm ERR! C:\Users\Lenovo\AppData\Roaming\npm-cache_logs\2020-06-21T16_16_49_430Z-debug.log</p>
 <p>如果不解决，继续往下走，hexo可以运行，但是打开 <a href="http://localhost:4000会发现没有格式，只有几行代码。">http://localhost:4000会发现没有格式，只有几行代码。</a></p>
 <p>解决：<br>继续输入</p>
