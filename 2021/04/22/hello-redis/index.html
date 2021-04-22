@@ -5,110 +5,110 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://gitee.com/wx_c3b99916a9">
+  <link rel="dns-prefetch" href="https://gitee.com/wx_c3b99916a9">
   <title>redis | 刘佳明的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="记录Redis （es）RedisNosql1、Nosql概述为什么要用Nosql 11、单击MySQL的年代 在90年代，一个基本的网站访问量不会太大，单个数据库完全足够 单机MySQL的弊端 数据量如果太大，一个机器会放不下 数据的索引（超过300万条–B+Tree）,一个机器的内存也会放不下 访问量（读写混合），一个服务器承受不了 只要出现了以上的一种情况，那么就必须升级数据库—于是缓存开始">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis">
-<meta property="og:url" content="http://gitee.com/wx_c3b99916a9/2021/04/22/hello-redis/index.html">
+<meta property="og:url" content="https://gitee.com/wx_c3b99916a9/2021/04/22/hello-redis/index.html">
 <meta property="og:site_name" content="刘佳明的博客">
 <meta property="og:description" content="记录Redis （es）RedisNosql1、Nosql概述为什么要用Nosql 11、单击MySQL的年代 在90年代，一个基本的网站访问量不会太大，单个数据库完全足够 单机MySQL的弊端 数据量如果太大，一个机器会放不下 数据的索引（超过300万条–B+Tree）,一个机器的内存也会放不下 访问量（读写混合），一个服务器承受不了 只要出现了以上的一种情况，那么就必须升级数据库—于是缓存开始">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200903170110723.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904094538273.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904094559135.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904162424009.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904200152188.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904201904519.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200905112959284.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155408592.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155652983.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155852766.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155914861.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160001485.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160020750.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160120904.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160137347.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160254774.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907161452251.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908080009310.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908080243105.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908082946762.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908083431312.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908084510673.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090042098.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090047927.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090107652.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090117044.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090125911.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090139291.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090512132.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090555083.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090713256.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090750233.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908091617585.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908091630111.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092107535.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092115903.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092419834.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092505517.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092555454.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095257091.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095319613.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095334237.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095403025.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908093855572.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908093952773.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095512694.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095854976.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101320059.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101340739.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101350205.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101831608.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101914628.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101955629.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908102429281.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908102454629.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908103308265.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908105220517.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908105254377.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908105726677.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110038990.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110050898.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110159581.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110205834.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110409327.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162554272.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162739397.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162723870.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162825435.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162856182.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162904845.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163012230.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163023600.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163226720.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163315084.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163405370.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163422392.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908165931725.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908165951265.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170009052.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170059769.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170109510.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170116102.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170139057.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170148484.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170202141.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170210654.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170219028.png">
-<meta property="og:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170536853.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200903170110723.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904094538273.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904094559135.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904162424009.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904200152188.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200904201904519.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200905112959284.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155408592.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155652983.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155852766.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907155914861.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160001485.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160020750.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160120904.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160137347.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907160254774.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200907161452251.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908080009310.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908080243105.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908082946762.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908083431312.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908084510673.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090042098.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090047927.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090107652.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090117044.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090125911.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090139291.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090512132.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090555083.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090713256.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908090750233.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908091617585.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908091630111.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092107535.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092115903.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092419834.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092505517.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908092555454.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095257091.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095319613.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095334237.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095403025.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908093855572.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908093952773.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095512694.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908095854976.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101320059.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101340739.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101350205.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101831608.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101914628.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908101955629.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908102429281.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908102454629.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908103308265.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908105220517.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908105254377.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908105726677.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110038990.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110050898.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110159581.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110205834.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908110409327.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162554272.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162739397.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162723870.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162825435.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162856182.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908162904845.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163012230.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163023600.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163226720.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163315084.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163405370.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908163422392.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908165931725.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908165951265.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170009052.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170059769.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170109510.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170116102.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170139057.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170148484.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170202141.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170210654.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170219028.png">
+<meta property="og:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200908170536853.png">
 <meta property="article:published_time" content="2021-04-22T01:57:02.000Z">
 <meta property="article:modified_time" content="2021-04-22T01:58:40.106Z">
 <meta property="article:author" content="Runsen">
 <meta property="article:tag" content="Python, Java, 机器学习, 爬虫, 前端, Spring家族, 人工智能">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200903170110723.png">
+<meta name="twitter:image" content="https://gitee.com/wx_c3b99916a9.gitee.io/.com//image-20200903170110723.png">
   
     <link rel="alternative" href="/atom.xml" title="刘佳明的博客" type="application/atom+xml">
   
@@ -987,7 +987,7 @@ public void test() throws JsonProcessingException &#123;
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://gitee.com/wx_c3b99916a9/2021/04/22/hello-redis/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://gitee.com/wx_c3b99916a9/2021/04/22/hello-redis/" alt="微信分享二维码">
     </div>
 </div>
 
